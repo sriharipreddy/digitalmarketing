@@ -1,0 +1,29 @@
+{
+  "name": "@marketing/influencer-hub",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./dist/app.js",
+  "scripts": {
+    "build": "tsc -b",
+    "type-check": "tsc -b --noEmit",
+    "dev": "tsx watch src/app.ts",
+    "start": "node dist/app.js",
+    "test": "vitest run",
+    "lint": "eslint src --max-warnings 0"
+  },
+  "dependencies": {
+    "@marketing/shared-config": "0.1.0",
+    "@marketing/shared-db": "0.1.0",
+    "@marketing/shared-middleware": "0.1.0",
+    "@marketing/shared-storage": "0.1.0",
+    "@marketing/shared-types": "0.1.0",
+    "express": "4.19.2",
+    "sequelize": "6.37.3"
+  },
+  "devDependencies": {
+    "@types/express": "4.17.21",
+    "tsx": "4.22.3",
+    "typescript": "5.5.4",
+    "vitest": "2.0.4"
+  }
+}

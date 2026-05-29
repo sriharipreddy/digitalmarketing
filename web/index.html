@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marketing Platform</title>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <script>
+      // Synchronous auth pre-check: avoid flash of unauthenticated content.
+      // If we have a refresh cookie but no access token, we let React handle it.
+      // Public paths skip the check.
+      (function () {
+        var path = window.location.pathname;
+        var publicPrefixes = ['/login', '/register', '/verify', '/reset-password', '/invite/'];
+        if (publicPrefixes.some(function (p) { return path === p || path.startsWith(p); })) return;
+        // Future: fetch /api/v1/core/users/me before React mounts
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

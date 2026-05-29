@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Logs
+*.log
+
+# Test + coverage
+coverage/
+.nyc_output/
+
+# Editor + OS
+.DS_Store
+*.swp
+*.swo
+
+# Misc
+*.bak
+.cache/
