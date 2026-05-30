@@ -23,19 +23,31 @@ import type { RootState } from '@/store';
 import { clearSession, setMemberships, setActiveWorkspace } from '@/store';
 import { api } from '@/lib/api';
 import { workspaceApi } from '@/lib/workspace-api';
+import NotificationBell from '@/components/NotificationBell';
 import { useSnackbar } from 'notistack';
 
 const drawerWidth = 240;
 
 const modules = [
   { label: 'Overview', path: '/dashboard' },
+  { label: 'One-Click', path: '/dashboard/one-click' },
   { label: 'SEO', path: '/dashboard/seo' },
+  { label: 'Local SEO', path: '/dashboard/local-seo' },
   { label: 'Campaigns', path: '/dashboard/campaigns' },
   { label: 'Content', path: '/dashboard/content' },
+  { label: 'Library', path: '/dashboard/content/library' },
   { label: 'Email', path: '/dashboard/email' },
+  { label: 'Messaging', path: '/dashboard/messaging' },
   { label: 'Social', path: '/dashboard/social' },
   { label: 'CRM', path: '/dashboard/crm' },
   { label: 'Analytics', path: '/dashboard/analytics' },
+  { label: 'Media', path: '/dashboard/media' },
+  { label: 'Influencer', path: '/dashboard/influencer' },
+  { label: 'Intelligence', path: '/dashboard/intelligence' },
+  { label: 'Affiliate', path: '/dashboard/affiliate' },
+  { label: 'Notifications', path: '/dashboard/notifications' },
+  { label: 'Integrations', path: '/dashboard/integrations' },
+  { label: 'Migration', path: '/dashboard/migration' },
 ];
 
 const workspaceMenu = [
@@ -123,6 +135,7 @@ export default function DashboardLayout() {
             </Typography>
           )}
           <Box sx={{ flexGrow: 1 }} />
+          <NotificationBell />
           <Tooltip title={user?.email ?? ''}>
             <Avatar sx={{ bgcolor: 'secondary.main', mr: 1, width: 32, height: 32, fontSize: 14 }}>
               {(user?.name ?? 'U').slice(0, 1)}

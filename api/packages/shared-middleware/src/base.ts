@@ -36,8 +36,15 @@ export function applyBaseMiddleware(
     }),
   );
 
-  // Compression
-  app.use(compression() as any);
+  // Compression — but skip for text/event-stream so SSE flushes immediately.
+  app.use(
+    compression({
+      filter: (req: any, res: any) => {
+        if (res.getHeader('Content-Type') === 'text/event-stream') return false;
+        return compression.filter(req, res);
+      },
+    }) as any,
+  );
 
   // Body parsing — note: webhook routes that need raw body must use
   // express.raw() inline BEFORE express.json() is applied to them

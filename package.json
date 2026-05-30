@@ -14,7 +14,20 @@
     "test": "yarn workspaces foreach -At run test",
     "type-check": "yarn workspaces foreach -At run type-check",
     "dev:web": "yarn workspace @marketing/web dev",
-    "dev:core": "yarn workspace @marketing/marketing-core dev"
+    "dev:core": "yarn workspace @marketing/marketing-core dev",
+    "dev:seo": "yarn workspace @marketing/seo-engine dev",
+    "dev:content": "yarn workspace @marketing/content-ai dev",
+    "dev:crm": "yarn workspace @marketing/crm-automation dev",
+    "dev:campaign": "yarn workspace @marketing/campaign-manager dev",
+    "dev:email": "yarn workspace @marketing/email-hub dev",
+    "dev:social": "yarn workspace @marketing/social-hub dev",
+    "dev:analytics": "yarn workspace @marketing/analytics-engine dev",
+    "dev:media": "yarn workspace @marketing/media-hub dev",
+    "dev:influencer": "yarn workspace @marketing/influencer-hub dev",
+    "dev:intel": "yarn workspace @marketing/intelligence dev",
+    "dev:affiliate": "yarn workspace @marketing/affiliate-hub dev",
+    "dev:notif": "yarn workspace @marketing/notification-service dev",
+    "dev:integration": "yarn workspace @marketing/integration-service dev"
   },
   "devDependencies": {
     "@types/node": "20.14.10",

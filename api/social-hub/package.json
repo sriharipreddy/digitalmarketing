@@ -18,6 +18,7 @@
     "@marketing/shared-storage": "0.1.0",
     "@marketing/shared-types": "0.1.0",
     "express": "4.19.2",
+    "joi": "17.13.3",
     "sequelize": "6.37.3"
   },
   "devDependencies": {
