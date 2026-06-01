@@ -77,7 +77,7 @@ export default function Social() {
     if (!active) return;
     try {
       // In stub mode, the authorize URL points right back at our callback path.
-      const r = await socialApi.startConnect(active.id, platform, window.location.origin + '/dashboard/social');
+      const r = await socialApi.startConnect(active.id, platform, window.location.origin + '/app/social');
       // Stub URL has ?code=stub_code_xxx&state=xxx&platform=xxx. Parse and immediately finish.
       const url = new URL(r.data.data.authorize_url);
       const code = url.searchParams.get('code')!;

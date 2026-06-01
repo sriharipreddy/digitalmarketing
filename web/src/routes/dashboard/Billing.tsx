@@ -88,7 +88,7 @@ export default function Billing() {
     try {
       const res = await api.post(`/core/workspaces/${active.id}/billing/checkout`, { plan_slug: slug });
       const url = res.data.data.url as string;
-      // In stub mode, url points to /dashboard/workspace/billing/return — go there;
+      // In stub mode, url points to /app/workspace/billing/return — go there;
       // in real mode, url is a Stripe-hosted checkout page.
       window.location.href = url;
     } catch (e: any) {

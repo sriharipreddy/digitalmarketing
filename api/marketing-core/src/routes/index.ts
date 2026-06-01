@@ -54,6 +54,7 @@ export function createApiRouter(deps: ApiRouterDeps): Router {
 
   // Workspaces the current user belongs to
   router.get('/workspaces', authenticateJwt, workspaceController.list);
+  router.post('/workspaces', authenticateJwt, workspaceController.create);
   router.get('/workspaces/:workspace_id', authenticateJwt, workspaceController.get);
   router.patch('/workspaces/:workspace_id', authenticateJwt, workspaceController.update);
   router.delete('/workspaces/:workspace_id', authenticateJwt, workspaceController.requestDeletion);

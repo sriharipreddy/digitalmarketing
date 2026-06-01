@@ -87,7 +87,7 @@ export class CommissionService {
         severity: 'info',
         title: `New commission: $${commission.toFixed(2)}`,
         body: `Affiliate ${affiliate.email} earned $${commission.toFixed(2)} on order ${input.order_external_id}`,
-        action_url: '/dashboard/affiliate',
+        action_url: '/app/affiliate',
         metadata: { commission_id: created.id, affiliate_id: affiliate.id, amount_usd: commission },
       });
     }
@@ -149,7 +149,7 @@ export class CommissionService {
           severity: 'success',
           title: `Commission paid: $${amount.toFixed(2)}`,
           body: `Paid out $${amount.toFixed(2)} to ${affiliate?.email ?? 'affiliate'} for order ${c.order_external_id}`,
-          action_url: '/dashboard/affiliate',
+          action_url: '/app/affiliate',
           metadata: { commission_id: c.id, affiliate_id: c.affiliate_id, amount_usd: amount },
         });
       }

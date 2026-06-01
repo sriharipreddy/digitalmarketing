@@ -12,6 +12,13 @@ const updateSchema = Joi.object({
   logo_url: Joi.string().uri().max(500).optional(),
 }).min(1);
 
+const createSchema = Joi.object({
+  name: Joi.string().min(2).max(255).required(),
+  timezone: Joi.string().max(50).optional(),
+  industry: Joi.string().max(100).optional(),
+  country: Joi.string().length(2).uppercase().optional(),
+});
+
 export class WorkspaceController {
   constructor(
     private workspaceService: WorkspaceService,
@@ -23,6 +30,31 @@ export class WorkspaceController {
       const userId = req.user!.id;
       const memberships = await this.workspaceService.listForUser(userId);
       res.json({ data: { memberships } });
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { error, value } = createSchema.validate(req.body, { abortEarly: false });
+      if (error) {
+        return next(new ValidationError('Validation failed', { fields: error.details.map((d) => d.message) }));
+      }
+      const result = await this.workspaceService.create(req.user!.id, value);
+      const wsId = result.workspace!.id;
+      await this.auditService.record({
+        workspace_id: wsId,
+        actor_user_id: req.user!.id,
+        actor_type: 'user',
+        action: 'workspace.created',
+        target_type: 'workspace',
+        target_id: wsId,
+        request_id: req.id,
+        ip_address: req.ip ?? null,
+        user_agent: req.get('user-agent') ?? null,
+      });
+      res.status(201).json({ data: result });
     } catch (err) {
       next(err);
     }

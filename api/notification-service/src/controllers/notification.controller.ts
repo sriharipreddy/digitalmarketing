@@ -11,7 +11,7 @@ const publishSchema = Joi.object({
   severity: Joi.string().valid('info', 'success', 'warning', 'error').optional(),
   title: Joi.string().min(1).max(500).required(),
   body: Joi.string().max(2000).optional(),
-  // Accept relative paths like "/dashboard/affiliate" as well as absolute URLs.
+  // Accept relative paths like "/app/affiliate" as well as absolute URLs.
   action_url: Joi.string().max(2000).optional(),
   metadata: Joi.object().unknown(true).optional(),
   from_service: Joi.string().max(64).required(),

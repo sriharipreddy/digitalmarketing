@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import type { Models } from '../models/index.js';
 import {
   ForbiddenError,
@@ -88,6 +89,54 @@ export class WorkspaceService {
     return { workspace: this.publicWorkspace(workspace) };
   }
 
+  /**
+   * Create a workspace and add the caller as its owner. Used by the dashboard
+   * when a signed-in user has no memberships yet (e.g. seeded platform admins,
+   * or anyone who registered without a workspace at sign-up).
+   */
+  async create(userId: string, input: { name: string; timezone?: string; country?: string; industry?: string }) {
+    const name = input.name?.trim() ?? '';
+    if (name.length < 2) {
+      throw new ValidationError('Invalid workspace name', { name: ['Must be at least 2 characters'] });
+    }
+    const { Workspace, WorkspaceMember, Plan } = this.models;
+
+    const transaction = await Workspace.sequelize!.transaction();
+    try {
+      const freePlan = await Plan.findOne({ where: { slug: 'free' }, transaction });
+      const slug = await this.uniqueSlug(this.toSlug(name), transaction);
+      const workspace = await Workspace.create(
+        {
+          name,
+          slug,
+          owner_id: userId,
+          plan_id: freePlan?.id ?? null,
+          status: 'trial',
+          trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+          timezone: input.timezone ?? 'UTC',
+          country: input.country ?? null,
+          industry: input.industry ?? null,
+        } as any,
+        { transaction },
+      );
+      await WorkspaceMember.create(
+        {
+          workspace_id: workspace.id,
+          user_id: userId,
+          role: 'owner',
+          status: 'active',
+          joined_at: new Date(),
+        } as any,
+        { transaction },
+      );
+      await transaction.commit();
+      return { workspace: this.publicWorkspace(workspace), role: 'owner' as const };
+    } catch (e) {
+      await transaction.rollback();
+      throw e;
+    }
+  }
+
   /** Throws ForbiddenError if user is not an active member of workspace. */
   async requireMember(workspaceId: string, userId: string) {
     const membership = await this.models.WorkspaceMember.findOne({
@@ -95,6 +144,21 @@ export class WorkspaceService {
     });
     if (!membership) throw new ForbiddenError('You are not a member of this workspace');
     return membership;
+  }
+
+  private toSlug(name: string): string {
+    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 100);
+  }
+
+  private async uniqueSlug(base: string, transaction: any): Promise<string> {
+    if (!base) base = 'workspace';
+    let candidate = base;
+    for (let i = 1; i < 100; i++) {
+      const existing = await this.models.Workspace.findOne({ where: { slug: candidate }, transaction });
+      if (!existing) return candidate;
+      candidate = `${base}-${i}`;
+    }
+    return `${base}-${crypto.randomBytes(3).toString('hex')}`;
   }
 
   private publicWorkspace(w: any) {

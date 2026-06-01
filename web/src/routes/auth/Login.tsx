@@ -49,7 +49,7 @@ export default function LoginPage() {
         }),
       );
       enqueueSnackbar(`Welcome back, ${payload.user.full_name}`, { variant: 'success' });
-      navigate('/dashboard');
+      navigate('/app');
     } catch (err: any) {
       const errCode = err.response?.data?.error?.code;
       if (errCode === 'email_not_verified') {
@@ -80,7 +80,7 @@ export default function LoginPage() {
         }),
       );
       enqueueSnackbar(`Welcome back, ${payload.user.full_name}`, { variant: 'success' });
-      navigate('/dashboard');
+      navigate('/app');
     } catch (err: any) {
       setServerError(err.response?.data?.error?.message ?? 'Invalid code');
     } finally {

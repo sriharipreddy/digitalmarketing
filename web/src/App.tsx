@@ -5,7 +5,7 @@ import LoginPage from '@/routes/auth/Login';
 import RegisterPage from '@/routes/auth/Register';
 import VerifyEmailPage from '@/routes/auth/VerifyEmail';
 import DashboardPage from '@/routes/dashboard/Overview';
-import DashboardLayout from '@/routes/dashboard/DashboardLayout';
+import AppLayout from '@/routes/dashboard/AppLayout';
 import WorkspaceSettings from '@/routes/dashboard/WorkspaceSettings';
 import Members from '@/routes/dashboard/Members';
 import AuditLog from '@/routes/dashboard/AuditLog';
@@ -39,16 +39,18 @@ function RequireAuth({ children }: { children: JSX.Element }) {
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/" element={<Navigate to="/app" replace />} />
+      {/* Legacy /dashboard/* URLs (bookmarks, old emails) → new /app/* */}
+      <Route path="/dashboard/*" element={<Navigate to="/app" replace />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/verify-email" element={<VerifyEmailPage />} />
 
       <Route
-        path="/dashboard"
+        path="/app"
         element={
           <RequireAuth>
-            <DashboardLayout />
+            <AppLayout />
           </RequireAuth>
         }
       >

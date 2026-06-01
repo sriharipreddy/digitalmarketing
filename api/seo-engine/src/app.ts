@@ -11,7 +11,11 @@ import { createSequelize, syncDatabase } from '@marketing/shared-db';
 import { env } from './_config/env.js';
 import { initModels } from './models/index.js';
 import { KeywordService } from './_services/keyword.service.js';
-import { StubKeywordResearchDriver } from './_services/keyword-research.driver.js';
+import {
+  StubKeywordResearchDriver,
+  DataForSeoKeywordResearchDriver,
+  type KeywordResearchDriver,
+} from './_services/keyword-research.driver.js';
 import { StubLocalListingDriver } from './_services/local-listing.driver.js';
 import { LocalListingService } from './_services/local-listing.service.js';
 import { CitationService } from './_services/citation.service.js';
@@ -51,7 +55,20 @@ async function bootstrap(): Promise<void> {
   await syncDatabase(sequelize);
   logger.info('database_synced');
 
-  const researchDriver = new StubKeywordResearchDriver();
+  // Keyword research driver: live DataForSEO when configured, otherwise stub.
+  // The live driver keeps a stub instance as a fallback so a transient API
+  // outage produces synthetic results instead of an empty page.
+  const stubResearchDriver = new StubKeywordResearchDriver();
+  const researchDriver: KeywordResearchDriver =
+    env.DATAFORSEO_DRIVER === 'dataforseo' && env.DATAFORSEO_USERNAME && env.DATAFORSEO_PASSWORD
+      ? new DataForSeoKeywordResearchDriver(
+          env.DATAFORSEO_USERNAME,
+          env.DATAFORSEO_PASSWORD,
+          logger,
+          undefined,
+          stubResearchDriver,
+        )
+      : stubResearchDriver;
   const localDriver = new StubLocalListingDriver();
   const asoDriver = new StubAsoDriver();
   logger.info({ keyword: researchDriver.constructor.name, local: localDriver.constructor.name, aso: asoDriver.constructor.name }, 'drivers_ready');

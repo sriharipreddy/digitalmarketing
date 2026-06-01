@@ -232,7 +232,7 @@ export default function NotificationBell() {
             size="small"
             onClick={() => {
               handleClose();
-              navigate('/dashboard/notifications');
+              navigate('/app/notifications');
             }}
           >
             View all

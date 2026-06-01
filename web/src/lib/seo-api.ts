@@ -88,7 +88,7 @@ export const seoApi = {
       `/seo/workspaces/${workspaceId}/keywords`,
     ),
   research: (workspaceId: string, seed: string, opts?: { country?: string; limit?: number }) =>
-    api.post<{ data: { country: string; language: string; results: ResearchResult[] } }>(
+    api.post<{ data: { country: string; language: string; results: ResearchResult[]; driver?: 'stub' | 'live' } }>(
       `/seo/workspaces/${workspaceId}/keywords/research`,
       { seed, ...(opts ?? {}) },
     ),

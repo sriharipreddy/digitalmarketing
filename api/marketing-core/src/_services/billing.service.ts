@@ -42,8 +42,8 @@ export class BillingService {
     const user = await this.deps.models.User.findByPk(input.requester_user_id);
     if (!user) throw new NotFoundError('User not found');
 
-    const successUrl = `${this.deps.appBaseUrl}/dashboard/workspace/billing/return`;
-    const cancelUrl = `${this.deps.appBaseUrl}/dashboard/workspace/billing`;
+    const successUrl = `${this.deps.appBaseUrl}/app/workspace/billing/return`;
+    const cancelUrl = `${this.deps.appBaseUrl}/app/workspace/billing`;
 
     const session = await this.deps.stripeDriver.createCheckoutSession({
       workspace_id: workspace.id,

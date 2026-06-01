@@ -37,7 +37,10 @@ export class KeywordService {
       language,
       limit,
     });
-    return { country, language, results };
+    // Surface the driver mode so the UI can hide the "stub mode" banner once
+    // a live provider is configured.
+    const driver = this.researchDriver.constructor.name.includes('Stub') ? 'stub' : 'live';
+    return { country, language, results, driver };
   }
 
   /** Save selected research results to the workspace's keyword bank. */

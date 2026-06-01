@@ -8,17 +8,17 @@ const serviceEnv = cleanEnv(process.env, {
   // Meta (Facebook + Instagram)
   META_APP_ID: str({ default: '' }),
   META_APP_SECRET: str({ default: '' }),
-  META_REDIRECT_URI: str({ default: 'http://localhost:3000/dashboard/social/callback/meta' }),
+  META_REDIRECT_URI: str({ default: 'http://localhost:3000/app/social/callback/meta' }),
 
   // Twitter / X
   TWITTER_CLIENT_ID: str({ default: '' }),
   TWITTER_CLIENT_SECRET: str({ default: '' }),
-  TWITTER_REDIRECT_URI: str({ default: 'http://localhost:3000/dashboard/social/callback/twitter' }),
+  TWITTER_REDIRECT_URI: str({ default: 'http://localhost:3000/app/social/callback/twitter' }),
 
   // LinkedIn
   LINKEDIN_CLIENT_ID: str({ default: '' }),
   LINKEDIN_CLIENT_SECRET: str({ default: '' }),
-  LINKEDIN_REDIRECT_URI: str({ default: 'http://localhost:3000/dashboard/social/callback/linkedin' }),
+  LINKEDIN_REDIRECT_URI: str({ default: 'http://localhost:3000/app/social/callback/linkedin' }),
 
   SERVICE_NAME_SELF: str({ default: 'social-hub' }),
 });

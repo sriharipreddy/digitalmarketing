@@ -34,6 +34,7 @@ export default function SeoKeywords() {
   const [researching, setResearching] = useState(false);
   const [results, setResults] = useState<ResearchResult[]>([]);
   const [selected, setSelected] = useState<Record<string, boolean>>({});
+  const [driverMode, setDriverMode] = useState<'stub' | 'live' | null>(null);
 
   const refresh = async () => {
     if (!active) return;
@@ -59,6 +60,7 @@ export default function SeoKeywords() {
     try {
       const r = await seoApi.research(active.id, seed.trim(), { limit: 10 });
       setResults(r.data.data.results);
+      if (r.data.data.driver) setDriverMode(r.data.data.driver);
     } catch (e: any) {
       enqueueSnackbar(e.response?.data?.error?.message ?? 'Research failed', { variant: 'error' });
     } finally {
@@ -101,10 +103,17 @@ export default function SeoKeywords() {
         SEO keywords
       </Typography>
 
-      <Alert severity="info" sx={{ mb: 2 }}>
-        Keyword research is in <strong>stub mode</strong>. Drop DataForSEO credentials into
-        <code> api/seo-engine/.env</code> + set <code>DATAFORSEO_DRIVER=dataforseo</code> for live SERP data.
-      </Alert>
+      {driverMode === 'stub' && (
+        <Alert severity="info" sx={{ mb: 2 }}>
+          Keyword research is in <strong>stub mode</strong>. Drop DataForSEO credentials into
+          <code> api/seo-engine/.env</code> + set <code>DATAFORSEO_DRIVER=dataforseo</code> for live SERP data.
+        </Alert>
+      )}
+      {driverMode === 'live' && (
+        <Alert severity="success" sx={{ mb: 2 }}>
+          Live DataForSEO results — volumes, difficulty, and CPC are real SERP data.
+        </Alert>
+      )}
 
       <Paper sx={{ p: 3, mb: 3, maxWidth: 900 }}>
         <Typography variant="subtitle1" sx={{ mb: 1 }}>

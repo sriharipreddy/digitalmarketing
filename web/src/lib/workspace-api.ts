@@ -58,6 +58,8 @@ export interface AuditEntry {
 
 export const workspaceApi = {
   listMemberships: () => api.get<{ data: { memberships: Membership[] } }>('/core/workspaces'),
+  create: (body: { name: string; timezone?: string; country?: string; industry?: string }) =>
+    api.post<{ data: { workspace: WorkspaceSummary; role: string } }>('/core/workspaces', body),
   get: (id: string) => api.get<{ data: { workspace: WorkspaceSummary; role: string } }>(`/core/workspaces/${id}`),
   update: (id: string, patch: Partial<Pick<WorkspaceSummary, 'name' | 'timezone' | 'industry' | 'country' | 'logo_url'>>) =>
     api.patch<{ data: { workspace: WorkspaceSummary; role: string } }>(`/core/workspaces/${id}`, patch),

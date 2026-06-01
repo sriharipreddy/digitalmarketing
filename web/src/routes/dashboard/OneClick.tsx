@@ -307,7 +307,7 @@ export default function OneClick() {
           {typeof finalSummary.campaign_id === 'string' && (
             <Alert severity="success" sx={{ mt: 2 }}>
               Campaign created — find it on the{' '}
-              <a href="/dashboard/campaigns" style={{ textDecoration: 'underline' }}>
+              <a href="/app/campaigns" style={{ textDecoration: 'underline' }}>
                 Campaigns page
               </a>
               .

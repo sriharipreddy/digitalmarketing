@@ -13,6 +13,7 @@
     "lint": "yarn workspaces foreach -At run lint",
     "test": "yarn workspaces foreach -At run test",
     "type-check": "yarn workspaces foreach -At run type-check",
+    "dev": "node scripts/dev-all.mjs",
     "dev:web": "yarn workspace @marketing/web dev",
     "dev:core": "yarn workspace @marketing/marketing-core dev",
     "dev:seo": "yarn workspace @marketing/seo-engine dev",
